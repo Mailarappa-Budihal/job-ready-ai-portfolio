@@ -9,7 +9,245 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      cover_letters: {
+        Row: {
+          company: string
+          content: string
+          created_at: string
+          id: string
+          job_title: string
+          resume_id: string | null
+          tone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company: string
+          content: string
+          created_at?: string
+          id?: string
+          job_title: string
+          resume_id?: string | null
+          tone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string
+          content?: string
+          created_at?: string
+          id?: string
+          job_title?: string
+          resume_id?: string | null
+          tone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cover_letters_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "resumes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_sessions: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          feedback: Json | null
+          id: string
+          job_title: string
+          session_type: string
+          transcript: Json | null
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          feedback?: Json | null
+          id?: string
+          job_title: string
+          session_type: string
+          transcript?: Json | null
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          feedback?: Json | null
+          id?: string
+          job_title?: string
+          session_type?: string
+          transcript?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      job_alerts: {
+        Row: {
+          created_at: string
+          frequency: string
+          id: string
+          keywords: string[]
+          locations: string[]
+          sources: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          frequency?: string
+          id?: string
+          keywords: string[]
+          locations: string[]
+          sources?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          frequency?: string
+          id?: string
+          keywords?: string[]
+          locations?: string[]
+          sources?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      portfolios: {
+        Row: {
+          content: Json
+          created_at: string
+          id: string
+          is_published: boolean | null
+          subdomain: string | null
+          template_id: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: Json
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          subdomain?: string | null
+          template_id?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          subdomain?: string | null
+          template_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string | null
+          subscription_status: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          name?: string | null
+          subscription_status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          subscription_status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      resumes: {
+        Row: {
+          ats_score: number | null
+          content: Json
+          created_at: string
+          file_url: string | null
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ats_score?: number | null
+          content?: Json
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ats_score?: number | null
+          content?: Json
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_jobs: {
+        Row: {
+          company: string
+          created_at: string
+          description: string | null
+          id: string
+          job_title: string
+          status: string | null
+          updated_at: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_title: string
+          status?: string | null
+          updated_at?: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_title?: string
+          status?: string | null
+          updated_at?: string
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
