@@ -2,9 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
@@ -35,12 +38,26 @@ const Header = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" className="text-gray-600 hover:text-brand-600">
-              Sign In
-            </Button>
-            <Button className="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white">
-              Get Started Free
-            </Button>
+            {user ? (
+              <Link to="/dashboard">
+                <Button className="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white">
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button variant="ghost" className="text-gray-600 hover:text-brand-600">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button className="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white">
+                    Get Started Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -66,12 +83,26 @@ const Header = () => {
                 Pricing
               </a>
               <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
-                <Button variant="ghost" className="text-gray-600 hover:text-brand-600 justify-start">
-                  Sign In
-                </Button>
-                <Button className="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white">
-                  Get Started Free
-                </Button>
+                {user ? (
+                  <Link to="/dashboard">
+                    <Button className="w-full bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white">
+                      Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/auth">
+                      <Button variant="ghost" className="w-full text-gray-600 hover:text-brand-600 justify-start">
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link to="/auth">
+                      <Button className="w-full bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white">
+                        Get Started Free
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>
