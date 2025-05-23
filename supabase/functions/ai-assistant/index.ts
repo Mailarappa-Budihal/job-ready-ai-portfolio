@@ -17,6 +17,10 @@ serve(async (req) => {
   try {
     const { prompt, type, context } = await req.json();
     
+    if (!GROQ_API_KEY) {
+      throw new Error("GROQ_API_KEY environment variable is not set");
+    }
+    
     // Different system prompts based on feature type
     const systemPrompts = {
       'portfolio': 'You are an expert portfolio creator. Create professional portfolio content based on the provided information.',
@@ -28,6 +32,8 @@ serve(async (req) => {
     };
 
     const systemPrompt = systemPrompts[type] || systemPrompts.default;
+    
+    console.log(`Processing ${type} request with prompt: ${prompt.substring(0, 50)}...`);
     
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -47,7 +53,19 @@ serve(async (req) => {
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Groq API error:', errorData);
+      throw new Error(`Groq API error: ${errorData.error?.message || response.statusText}`);
+    }
+
     const data = await response.json();
+    
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      throw new Error("Invalid response format from Groq API");
+    }
+    
+    console.log(`Generated content for ${type} (first 50 chars): ${data.choices[0].message.content.substring(0, 50)}...`);
     
     return new Response(JSON.stringify({
       content: data.choices[0].message.content,
@@ -58,7 +76,10 @@ serve(async (req) => {
     
   } catch (error) {
     console.error('Error in AI assistant function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ 
+      error: error.message || "Unknown error occurred",
+      status: "error" 
+    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
